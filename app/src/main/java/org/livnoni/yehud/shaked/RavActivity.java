@@ -1,0 +1,127 @@
+package org.livnoni.yehud.shaked;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.text.ParseException;
+
+public class RavActivity extends AppCompatActivity {
+
+    String docUrl = "https://docs.google.com/document/d/e/2PACX-1vQMp-RWU67UdVdEEQzWrEe1i8kTG5NAsOAeuNRiUK5-Vfg5Bl6Ow3GP395h6DRRYy-MAxNPpTLZNvjv/pub";
+    TextView ravMsgTV;
+    String updateMsg ="";
+    private ProgressDialog mProgressDialog;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(org.livnoni.yehud.shaked.R.layout.activity_rav);
+
+        forceEnglishView();
+
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(org.livnoni.yehud.shaked.R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        ravMsgTV = (TextView) findViewById(org.livnoni.yehud.shaked.R.id.ravMsgTV);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setTitle("מתחבר לשרת...");
+        mProgressDialog.setMessage("טוען את דבר הרב");
+
+        new grabData().execute();
+
+
+
+
+    }
+
+
+    public class grabData extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Document doc = Jsoup.connect(docUrl).get();
+                Elements spans = doc.select("div[id=contents]").select("span");
+                for(Element span : spans){
+                    updateMsg = updateMsg + span.text() +"\n";
+                    Log.d("grabDocData","span["+span.id()+"]="+span.text());
+
+                }
+                Log.d("grabDocData",updateMsg);
+
+
+                Log.d("grabDocData","FINISH------------------------------------------");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mProgressDialog.dismiss();
+            showUpdateMsg();
+
+        }
+
+        @Override
+        protected void onPreExecute(){
+            mProgressDialog.show();
+        }
+
+    }
+
+    public void showUpdateMsg()
+    {
+        if(updateMsg.length()>1)
+        {
+            ravMsgTV.append(updateMsg);
+//            ravMsgTV.setMovementMethod(new ScrollingMovementMethod());
+        }
+        else
+        {
+            ravMsgTV.setTextColor(Color.RED);
+            ravMsgTV.append("אין הודעות חדשות");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        onBackPressed();
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    public void forceEnglishView()
+    {
+        if (getWindow().getDecorView().getLayoutDirection() == View.LAYOUT_DIRECTION_LTR) {
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+    }
+}
