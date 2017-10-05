@@ -26,7 +26,7 @@ import java.util.Vector;
 
 public class ShiurimActivity extends AppCompatActivity {
 
-    String sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ95GwooKs7aU4WUIuMEKkx4bYkU8ilVzy1LJ8Kn318XL7yNnz7UjNf5tDIafTCBYinUoA70wcyhA4L/pubhtml";
+    String sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTtVUuD-4LqAEnIpePPjIOItT6omg2cz_efTciQlmKg7Mvg9BYU4zn1TyPPA4eTxU6i7B4GgUacMZat/pubhtml";
     private ProgressDialog mProgressDialog;
     public StaticClass.Shuirs shuirs;
     TextView dayNameTV,textTV;
