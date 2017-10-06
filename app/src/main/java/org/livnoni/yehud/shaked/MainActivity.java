@@ -368,6 +368,7 @@ public class MainActivity extends AppCompatActivity {
         menu.add(Menu.NONE,0,Menu.NONE,getResources().getString(org.livnoni.yehud.shaked.R.string.about));
         menu.add(Menu.NONE,1,Menu.NONE,getResources().getString(org.livnoni.yehud.shaked.R.string.sendFeedback));
         menu.add(Menu.NONE,2,Menu.NONE,getResources().getString(org.livnoni.yehud.shaked.R.string.shareFriends));
+        menu.add(Menu.NONE,3,Menu.NONE,getResources().getString(org.livnoni.yehud.shaked.R.string.donate));
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -408,6 +409,20 @@ public class MainActivity extends AppCompatActivity {
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(shareIntent , "SHARE USING"));
+                break;
+            case 3:
+                AlertDialog donateDialog = new AlertDialog.Builder(MainActivity.this).create();
+                donateDialog.setIcon(org.livnoni.yehud.shaked.R.drawable.ic_info_black_24dp);
+                donateDialog.setTitle(getResources().getString(R.string.donate));
+                donateDialog.setMessage("פה יהיה רשום הפרטים של החשבון בנק לתרומות + קישור לאתר אינטנרט שמאפשר תרומה מקוונת");
+
+                donateDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                donateDialog.show();
                 break;
         }
         return super.onOptionsItemSelected(menuItem);

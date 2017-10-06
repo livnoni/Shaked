@@ -4,11 +4,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "org.livnoni.yehud.yakir"
+        applicationId "org.livnoni.yehud.shaked"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 19
-        versionName "2.3"
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

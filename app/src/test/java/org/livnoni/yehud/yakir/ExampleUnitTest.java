@@ -1,4 +1,4 @@
-package org.livnoni.yehud.yakir;
+package org.livnoni.yehud.shaked;
 
 import org.junit.Test;
 

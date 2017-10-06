@@ -68,18 +68,16 @@
                 android:background="@drawable/customborder"
                 android:orientation="horizontal">
 
-
-
-
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text='לעילוי נשמת חברנו יחיאל ז"ל'
                     android:textColor="@color/navy"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_gravity="center"
+
                     android:layout_marginLeft="20dp"/>
 
 
