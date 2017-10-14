@@ -29,11 +29,14 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
@@ -211,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
             changeButtonBackground(goToTfilaCtivity,false);
             changeButtonBackground(RavBtn,false);
             changeButtonBackground(ShiurimBtn,false);
+
+            calcShabatTimes();
+
             showWelcomeText();
             showUpdateMsg();
             initialDate();
@@ -274,6 +280,67 @@ public class MainActivity extends AppCompatActivity {
                 minyansVector.add(tempMinyan);
             }
         }
+    }
+
+    public void calcShabatTimes()
+    {
+        try
+        {
+
+            //look for בית כנסת  שקד
+            for(int i=0; i<minyansVector.size(); i++)
+            {
+                if (minyansVector.get(i).name.equals("בית כנסת  שקד")  )
+                {
+                    Log.d("calcShabatTimes","found: "+minyansVector.get(i).name);
+
+
+                    String enter = changeTimeFormat(StaticClass.ShabatInfo.getShabatEnter());
+                    String exit = changeTimeFormat(StaticClass.ShabatInfo.getShabatExit());
+
+//                    getTimes()[0];
+
+                    String [] kabalatShabat = minyansVector.get(i).saturday.kabalatShabat.getTimes();
+                    String [] minha = minyansVector.get(i).saturday.minha.getTimes();
+                    String [] arvit = minyansVector.get(i).saturday.arvit.getTimes();
+
+                    //.length == 0 means that the val is blank
+
+                    if(enter != null && enter != "" && enter !=" " && kabalatShabat.length == 0)
+                    {
+                        minyansVector.get(i).saturday.kabalatShabat = new StaticClass.TfilaTime(new String[]{addMinutesToStringTime_HHMM(enter,10),"מנחה/קבלת שבת"});
+                    }
+
+                    if(enter != null && enter != "" && enter !=" " && minha.length == 0)
+                    {
+                        minyansVector.get(i).saturday.minha = new StaticClass.TfilaTime(new String[]{addMinutesToStringTime_HHMM(enter,-5),"מנחה"});
+                    }
+
+                    if(exit != null && exit != "" && exit !=" " && arvit.length == 0)
+                    {
+                        minyansVector.get(i).saturday.arvit = new StaticClass.TfilaTime(new String[]{exit,"ערבית מוצ\"ש"});
+                    }
+
+
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d("calcShabatTimes","EXEPTION:"+e.getMessage());
+
+        }
+    }
+
+    public String addMinutesToStringTime_HHMM(String time, int min) throws ParseException //string format is: HH:MM
+    {
+        DateFormat sdf = new SimpleDateFormat("hh:mm");
+        Date date = sdf.parse(time);
+        long timeMil = date.getTime();
+        timeMil  = timeMil + min * 60000;
+        date.setTime(timeMil);
+
+        return date.toString();
     }
 
 
