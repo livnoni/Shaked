@@ -37,6 +37,7 @@ import java.util.Arrays;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
@@ -334,16 +335,15 @@ public class MainActivity extends AppCompatActivity {
 
     public String addMinutesToStringTime_HHMM(String time, int min) throws ParseException //string format is: HH:MM
     {
-        DateFormat sdf = new SimpleDateFormat("hh:mm");
-        Date date = sdf.parse(time);
-        long timeMil = date.getTime();
-        timeMil  = timeMil + min * 60000;
-        date.setTime(timeMil);
-
-        return date.toString();
+        String myTime = time;
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Date d = df.parse(myTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.MINUTE, min);
+        String newTime = df.format(cal.getTime());
+        return newTime;
     }
-
-
 
     public void showWelcomeText()
     {
